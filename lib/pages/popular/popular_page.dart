@@ -90,13 +90,11 @@ class _PopularPageState extends State<PopularPage>
       // scrollController.jumpTo(popularController.scrollOffset);
     });
     return OrientationBuilder(builder: (context, orientation) {
-      return PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (bool didPop, Object? result) {
-          if (didPop) {
-            return;
-          }
+      return WillPopScope(
+        onWillPop: () async {
           onBackPressed(context);
+          // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+          return false;
         },
         child: RefreshIndicator(
           onRefresh: () async {

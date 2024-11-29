@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -114,10 +116,11 @@ class _AboutPageState extends State<AboutPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {});
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
+    return WillPopScope(
+      onWillPop: () async {
         onBackPressed(context);
+        // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+        return true;
       },
       child: Scaffold(
         appBar: const SysAppBar(title: Text('关于')),

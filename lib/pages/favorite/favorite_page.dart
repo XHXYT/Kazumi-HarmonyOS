@@ -42,13 +42,11 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
-      return PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (bool didPop, Object? result) {
-          if (didPop) {
-            return;
-          }
+      return WillPopScope(
+        onWillPop: () async {
           onBackPressed(context);
+          // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+          return false;
         },
         child: Scaffold(
           appBar: SysAppBar(
@@ -98,20 +96,25 @@ class _FavoritePageState extends State<FavoritePage> {
           if (bangumiList.isNotEmpty) {
             return Stack(
               children: [
-                BangumiCardV(bangumiItem: bangumiList[index], canTap: !showDelete,),
+                BangumiCardV(
+                  bangumiItem: bangumiList[index],
+                  canTap: !showDelete,
+                ),
                 Positioned(
                   right: 5,
                   bottom: 5,
-                  child: showDelete ? IconButton.filledTonal(
-                    icon: const Icon(Icons.favorite),
-                    onPressed: () async {
-                      await favoriteController
-                          .deleteFavorite(bangumiList[index]);
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    },
-                  ) : Container(),
+                  child: showDelete
+                      ? IconButton.filledTonal(
+                          icon: const Icon(Icons.favorite),
+                          onPressed: () async {
+                            await favoriteController
+                                .deleteFavorite(bangumiList[index]);
+                            if (mounted) {
+                              setState(() {});
+                            }
+                          },
+                        )
+                      : Container(),
                 ),
               ],
             );

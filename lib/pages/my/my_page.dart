@@ -35,13 +35,11 @@ class _MyPageState extends State<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) {
-        if (didPop) {
-          return;
-        }
+    return WillPopScope(
+      onWillPop: () async {
         onBackPressed(context);
+        // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+        return false;
       },
       child: Scaffold(
         appBar: const SysAppBar(title: Text('我的')),

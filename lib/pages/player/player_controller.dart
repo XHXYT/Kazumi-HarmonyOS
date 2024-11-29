@@ -75,7 +75,9 @@ abstract class _PlayerController with Store {
     KazumiLogger().log(Level.info, 'VideoItem开始初始化');
     int episodeFromTitle = 0;
     try {
-      episodeFromTitle = Utils.extractEpisodeNumber(videoPageController.roadList[videoPageController.currentRoad].identifier[videoPageController.currentEpisode - 1]);
+      episodeFromTitle = Utils.extractEpisodeNumber(videoPageController
+          .roadList[videoPageController.currentRoad]
+          .identifier[videoPageController.currentEpisode - 1]);
     } catch (e) {
       KazumiLogger().log(Level.error, '从标题解析集数错误 ${e.toString()}');
     }
@@ -85,7 +87,8 @@ abstract class _PlayerController with Store {
     getDanDanmaku(videoPageController.title, episodeFromTitle);
     mediaPlayer = await createVideoController();
     bool autoPlay = setting.get(SettingBoxKey.autoPlay, defaultValue: true);
-    playerSpeed = setting.get(SettingBoxKey.defaultPlaySpeed, defaultValue: 1.0);
+    playerSpeed =
+        setting.get(SettingBoxKey.defaultPlaySpeed, defaultValue: 1.0);
     if (offset != 0) {
       await mediaPlayer.seekTo(Duration(seconds: offset));
     }
@@ -115,9 +118,11 @@ abstract class _PlayerController with Store {
     mediaPlayer = VideoPlayerController.networkUrl(Uri.parse(videoUrl),
         httpHeaders: httpHeaders);
     mediaPlayer.addListener(() {
-      if (mediaPlayer.value.hasError && !mediaPlayer.value.isCompleted) {
+      if (mediaPlayer.value.hasError &&
+          mediaPlayer.value.position < mediaPlayer.value.duration) {
         SmartDialog.showToast('播放器内部错误 ${mediaPlayer.value.errorDescription}');
-        KazumiLogger().log(Level.error, 'Player inent error. ${mediaPlayer.value.errorDescription} $videoUrl');
+        KazumiLogger().log(Level.error,
+            'Player inent error. ${mediaPlayer.value.errorDescription} $videoUrl');
       }
     });
     await mediaPlayer.initialize();

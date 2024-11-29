@@ -7,6 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ApiInterceptor extends Interceptor {
   static Box setting = GStorage.setting;
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // Github mirror
@@ -28,14 +29,14 @@ class ApiInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     String url = err.requestOptions.uri.toString();
-    if (!url.contains('heartBeat')) {
+    if (url != 'heartBeat') {
+      // Direct comparison instead of contains
       SmartDialog.showToast(
         await dioError(err),
         displayType: SmartToastType.onlyRefresh,
       );
     }
     super.onError(err, handler);
-    // super.onError(err, handler);
   }
 
   static Future<String> dioError(DioException error) async {
@@ -62,24 +63,21 @@ class ApiInterceptor extends Interceptor {
 
   static Future<String> checkConnect() async {
     final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult.contains(ConnectivityResult.mobile)) {
-      return '正在使用移动流量';
+    switch (connectivityResult) {
+      case ConnectivityResult.mobile:
+        return '正在使用移动流量';
+      case ConnectivityResult.wifi:
+        return '正在使用wifi';
+      case ConnectivityResult.ethernet:
+        return '正在使用局域网';
+      case ConnectivityResult.vpn:
+        return '正在使用代理网络';
+      case ConnectivityResult.other:
+        return '正在使用其他网络';
+      case ConnectivityResult.none:
+        return '未连接到任何网络';
+      default:
+        return '';
     }
-    if (connectivityResult.contains(ConnectivityResult.wifi)) {
-      return '正在使用wifi';
-    }
-    if (connectivityResult.contains(ConnectivityResult.ethernet)) {
-      return '正在使用局域网';
-    }
-    if (connectivityResult.contains(ConnectivityResult.vpn)) {
-      return '正在使用代理网络';
-    }
-    if (connectivityResult.contains(ConnectivityResult.other)) {
-      return '正在使用其他网络';
-    }
-    if (connectivityResult.contains(ConnectivityResult.none)) {
-      return '未连接到任何网络';
-    }
-    return '';
   }
 }

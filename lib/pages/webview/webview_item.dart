@@ -5,9 +5,7 @@ import 'package:kazumi/pages/webview/webview_item_impel/webview_windows_item_imp
 import 'package:kazumi/pages/webview/webview_item_impel/webview_linux_item_impel.dart';
 
 class WebviewItem extends StatefulWidget {
-  const WebviewItem({
-    super.key
-  });
+  const WebviewItem({super.key});
 
   @override
   State<WebviewItem> createState() => _WebviewItemState();
@@ -27,6 +25,8 @@ Widget get webviewUniversal {
   if (Platform.isLinux) {
     return const WebviewLinuxItemImpel();
   }
+  if (Platform.isOhos) {
+    return const WebviewItemImpel();
+  }
   return const WebviewItemImpel();
 }
-

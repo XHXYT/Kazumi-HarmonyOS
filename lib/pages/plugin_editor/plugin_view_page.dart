@@ -121,10 +121,11 @@ class _PluginViewPageState extends State<PluginViewPage> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {});
-    return PopScope(
-      canPop: true,
-      onPopInvokedWithResult: (bool didPop, Object? result) {
+    return WillPopScope(
+      onWillPop: () async {
         onBackPressed(context);
+        // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+        return true;
       },
       child: Scaffold(
         appBar: SysAppBar(

@@ -46,6 +46,9 @@ class WebviewItemControllerFactory {
     if (Platform.isMacOS || Platform.isIOS) {
       return WebviewAppleItemControllerImpel();
     }
+    if (Platform.isOhos) {
+      return WebviewItemControllerImpel();
+    }
     return WebviewItemControllerImpel();
   }
 }

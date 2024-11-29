@@ -53,7 +53,8 @@ abstract class _VideoPageController with Store {
   final PluginsController pluginsController = Modular.get<PluginsController>();
   final HistoryController historyController = Modular.get<HistoryController>();
 
-  Future<void> changeEpisode(int episode, {int currentRoad = 0, int offset = 0}) async {
+  Future<void> changeEpisode(int episode,
+      {int currentRoad = 0, int offset = 0}) async {
     showDebugLog = false;
     loading = true;
     currentEpisode = episode;
@@ -71,8 +72,8 @@ abstract class _VideoPageController with Store {
     if (urlItem.startsWith('http://')) {
       urlItem = urlItem.replaceFirst('http', 'https');
     }
+    KazumiLogger().log(Level.info, '视频链接为 $urlItem');
     final webviewItemController = Modular.get<WebviewItemController>();
     await webviewItemController.loadUrl(urlItem, offset: offset);
   }
 }
-

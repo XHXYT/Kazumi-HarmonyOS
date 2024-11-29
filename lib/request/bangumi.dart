@@ -43,7 +43,8 @@ class BangumiHTTP {
   // Get clander by search API, we need a list of strings (the start of the season and the end of the season) eg: ["2024-07-01", "2024-10-01"]
   // because the air date is the launch date of the anime, it is usually a few days before the start of the season
   // So we usually use the start of the season month -1 and the end of the season month -1
-  static Future<List<List<BangumiItem>>> getCalendarBySearch(List<String> dateRange) async {
+  static Future<List<List<BangumiItem>>> getCalendarBySearch(
+      List<String> dateRange) async {
     List<BangumiItem> bangumiList = [];
     List<List<BangumiItem>> bangumiCalendar = [];
     var params = <String, dynamic>{
@@ -89,7 +90,8 @@ class BangumiHTTP {
     return bangumiCalendar;
   }
 
-  static Future<List<BangumiItem>> getBangumiList({int rank = 2, String tag = ''}) async {
+  static Future<List<BangumiItem>> getBangumiList(
+      {int rank = 2, String tag = ''}) async {
     List<BangumiItem> bangumiList = [];
     late Map<String, dynamic> params;
     if (tag == '') {
@@ -189,7 +191,8 @@ class BangumiHTTP {
   static Future<EpisodeInfo> getBangumiEpisodeByID(int id, int episode) async {
     EpisodeInfo episodeInfo = EpisodeInfo.fromTemplate();
     try {
-      final res = await Request().get('${Api.bangumiEpisodeByID}$id&offset=${episode - 1}&limit=1',
+      final res = await Request().get(
+          '${Api.bangumiEpisodeByID}$id&offset=${episode - 1}&limit=1',
           options: Options(headers: bangumiHTTPHeader));
       final jsonData = res.data['data'][0];
       episodeInfo = EpisodeInfo.fromJson(jsonData);
@@ -200,10 +203,12 @@ class BangumiHTTP {
     return episodeInfo;
   }
 
-  static Future<CommentResponse> getBangumiCommentsByID(int id, {int offset = 0}) async {
+  static Future<CommentResponse> getBangumiCommentsByID(int id,
+      {int offset = 0}) async {
     CommentResponse commentResponse = CommentResponse.fromTemplate();
     try {
-      final res = await Request().get('${Api.bangumiInfoByIDNext}$id/comments?offset=$offset&limit=20',
+      final res = await Request().get(
+          '${Api.bangumiInfoByIDNext}$id/comments?offset=$offset&limit=20',
           options: Options(headers: bangumiHTTPHeader));
       final jsonData = res.data;
       commentResponse = CommentResponse.fromJson(jsonData);
@@ -214,30 +219,33 @@ class BangumiHTTP {
     return commentResponse;
   }
 
-  static Future<EpisodeCommentResponse> getBangumiCommentsByEpisodeID(int id) async {
-    EpisodeCommentResponse commentResponse = EpisodeCommentResponse.fromTemplate();
+  static Future<EpisodeCommentResponse> getBangumiCommentsByEpisodeID(
+      int id) async {
+    EpisodeCommentResponse commentResponse =
+        EpisodeCommentResponse.fromTemplate();
     try {
-      final res = await Request().get('${Api.bangumiInfoByIDNext}-/episode/$id/comments',
+      final res = await Request().get(
+          '${Api.bangumiInfoByIDNext}-/episode/$id/comments',
           options: Options(headers: bangumiHTTPHeader));
       final jsonData = res.data;
       commentResponse = EpisodeCommentResponse.fromJson(jsonData);
     } catch (e) {
-      KazumiLogger()
-          .log(Level.error, 'Resolve bangumi episode comments failed ${e.toString()}');
+      KazumiLogger().log(Level.error,
+          'Resolve bangumi episode comments failed ${e.toString()}');
     }
     return commentResponse;
   }
-  
+
   static Future<CharacterResponse> getCharatersByID(int id) async {
     CharacterResponse characterResponse = CharacterResponse.fromTemplate();
     try {
-      final res = await Request().get(Api.bangumiInfoByID + id.toString() + '/characters',
+      final res = await Request().get('${Api.bangumiInfoByID}$id/characters',
           options: Options(headers: bangumiHTTPHeader));
       final jsonData = res.data;
       characterResponse = CharacterResponse.fromJson(jsonData);
     } catch (e) {
-      KazumiLogger()
-          .log(Level.error, 'Resolve bangumi characters failed ${e.toString()}');
+      KazumiLogger().log(
+          Level.error, 'Resolve bangumi characters failed ${e.toString()}');
     }
     return characterResponse;
   }

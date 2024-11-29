@@ -68,10 +68,11 @@ class _HistoryPageState extends State<HistoryPage>
     WidgetsBinding.instance.addPostFrameCallback((_) {});
     return OrientationBuilder(builder: (context, orientation) {
       return Observer(builder: (context) {
-        return PopScope(
-          canPop: true,
-          onPopInvokedWithResult: (bool didPop, Object? result) async {
+        return WillPopScope(
+          onWillPop: () async {
             onBackPressed(context);
+            // 返回true表示允许路由弹出，返回false表示阻止路由弹出
+            return true;
           },
           child: Scaffold(
             appBar: SysAppBar(
