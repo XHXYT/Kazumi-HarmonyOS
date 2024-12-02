@@ -1,7 +1,7 @@
 # Kazumi
 使用 flutter 开发的基于自定义规则的番剧采集与在线观看程序。使用最多五行基于 `Xpath` 语法的选择器构建自己的规则。支持规则导入与规则分享。绝赞开发中 (～￣▽￣)～
 
-暂时修复由webview组件引起的视频加载失败问题，非常感谢@ErBWs大佬提供的帮助
+暂时修复由webview组件引起的视频加载失败问题，非常感谢[@ErBWs](https://github.com/ErBWs)、[@Predidit](https://github.com/Predidit)大佬提供的帮助
 
 ## 支持平台
 
