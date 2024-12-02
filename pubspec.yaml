@@ -82,7 +82,7 @@ dependencies:
   webview_flutter:
     git:
       url: https://gitee.com/openharmony-sig/flutter_packages.git
-      path: "packages/webview_flutter-v4.4.4/webview_flutter"
+      path: "packages/webview_flutter/webview_flutter"
   canvas_danmaku: ^0.2.3
   webdav_client: ^1.2.2
   tray_manager: ^0.2.3

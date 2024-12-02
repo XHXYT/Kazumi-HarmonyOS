@@ -4,6 +4,7 @@
     // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Kazumi-HarmonyOS",
             "request": "launch",
@@ -20,18 +21,6 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
-        },
-        {
-            "name": "Kazumi-HarmonyOS (attach mode)",
-            "cwd": "packages/ohos",
-            "request": "attach",
-            "type": "dart",
-        },
-        {
-            "name": "Kazumi-HarmonyOS",
-            "cwd": "packages/ohos",
-            "request": "launch",
-            "type": "dart"
         },
     ]
 }

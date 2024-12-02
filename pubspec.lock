@@ -1462,34 +1462,34 @@ packages:
   webview_flutter:
     dependency: "direct main"
     description:
-      path: "packages/webview_flutter-v4.4.4/webview_flutter"
+      path: "packages/webview_flutter/webview_flutter"
       ref: HEAD
       resolved-ref: "72e309033f1171689521227f8580c3bfac97a588"
       url: "https://gitee.com/openharmony-sig/flutter_packages.git"
     source: git
-    version: "4.4.4"
+    version: "4.6.0"
   webview_flutter_android:
     dependency: transitive
     description:
-      path: "packages/webview_flutter-v4.4.4/webview_flutter_android"
+      path: "packages/webview_flutter/webview_flutter_android"
       ref: HEAD
       resolved-ref: "72e309033f1171689521227f8580c3bfac97a588"
       url: "https://gitee.com/openharmony-sig/flutter_packages.git"
     source: git
-    version: "3.13.2"
+    version: "3.15.0"
   webview_flutter_ohos:
     dependency: transitive
     description:
-      path: "packages/webview_flutter-v4.4.4/webview_flutter_ohos"
+      path: "packages/webview_flutter/webview_flutter_ohos"
       ref: HEAD
       resolved-ref: "72e309033f1171689521227f8580c3bfac97a588"
       url: "https://gitee.com/openharmony-sig/flutter_packages.git"
     source: git
-    version: "3.13.2"
+    version: "3.15.0"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
-      path: "packages/webview_flutter_platform_interface-v2.10.0/webview_flutter_platform_interface"
+      path: "packages/webview_flutter/webview_flutter_platform_interface"
       ref: HEAD
       resolved-ref: "72e309033f1171689521227f8580c3bfac97a588"
       url: "https://gitee.com/openharmony-sig/flutter_packages.git"
@@ -1498,12 +1498,12 @@ packages:
   webview_flutter_wkwebview:
     dependency: transitive
     description:
-      path: "packages/webview_flutter-v4.4.4/webview_flutter_wkwebview"
+      path: "packages/webview_flutter/webview_flutter_wkwebview"
       ref: HEAD
       resolved-ref: "72e309033f1171689521227f8580c3bfac97a588"
       url: "https://gitee.com/openharmony-sig/flutter_packages.git"
     source: git
-    version: "3.10.1"
+    version: "3.12.0"
   webview_windows:
     dependency: "direct main"
     description:

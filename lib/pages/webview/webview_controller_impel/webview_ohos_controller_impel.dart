@@ -4,7 +4,11 @@ import 'package:kazumi/utils/utils.dart';
 import 'package:kazumi/pages/webview/webview_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class WebviewItemControllerImpel
+// The following code using almost the same code from lib/pages/webview/webview_controller.dart.
+// It's a workaround for webview_flutter lib (It behaves differently on macOS/iOS and Android).
+// 1. We need onPageFinished rather than onUrlChanged to execute JavaScript code when document created.
+// 2. We need encode all url received from JavaScript channel to avoid crash.
+class WebviewOhosItemControllerImpel
     extends WebviewItemController<WebViewController> {
   // workaround for webview_flutter lib.
   // webview_flutter lib won't change currentUrl after redirect using window.location.href.
@@ -17,12 +21,36 @@ class WebviewItemControllerImpel
 
   @override
   Future<void> init() async {
-    late final PlatformWebViewControllerCreationParams params;
-    params = const PlatformWebViewControllerCreationParams();
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(params);
-    controller.setJavaScriptMode(JavaScriptMode.unrestricted);
-    controller.addJavaScriptChannel('JSBridgeDebug',
+    webviewController ??= WebViewController();
+    videoPageController.changeEpisode(videoPageController.currentEpisode,
+        currentRoad: videoPageController.currentRoad,
+        offset: videoPageController.historyOffset);
+  }
+
+  @override
+  Future<void> loadUrl(String url, {int offset = 0}) async {
+    ifrmaeParserTimer?.cancel();
+    videoParserTimer?.cancel();
+    await unloadPage();
+    await setDesktopUserAgent();
+    count = 0;
+    currentUrl = '';
+    this.offset = offset;
+    isIframeLoaded = false;
+    isVideoSourceLoaded = false;
+    videoPageController.loading = true;
+    await webviewController!
+        .setNavigationDelegate(NavigationDelegate(onUrlChange: (currentUrl) {
+      debugPrint('Current URL: ${currentUrl.url}');
+      if (videoPageController.currentPlugin.useNativePlayer &&
+          !videoPageController.currentPlugin.useLegacyParser) {
+        addBlobParser();
+        addInviewIframeBridge();
+      }
+      addFullscreenListener();
+    }));
+    await webviewController!.setJavaScriptMode(JavaScriptMode.unrestricted);
+    await webviewController!.addJavaScriptChannel('JSBridgeDebug',
         onMessageReceived: (JavaScriptMessage message) {
       debugPrint('JS Bridge: ${message.message}');
       videoPageController.logLines.add('Callback received: ${message.message}');
@@ -58,7 +86,7 @@ class WebviewItemControllerImpel
       }
     });
     if (!videoPageController.currentPlugin.useLegacyParser) {
-      controller.addJavaScriptChannel('VideoBridgeDebug',
+      await webviewController!.addJavaScriptChannel('VideoBridgeDebug',
           onMessageReceived: (JavaScriptMessage message) {
         debugPrint('VideoJS Bridge: ${message.message}');
         videoPageController.logLines
@@ -78,7 +106,7 @@ class WebviewItemControllerImpel
         }
       });
     }
-    controller.addJavaScriptChannel('FullscreenBridgeDebug',
+    await webviewController!.addJavaScriptChannel('FullscreenBridgeDebug',
         onMessageReceived: (JavaScriptMessage message) {
       debugPrint('FullscreenJS桥收到的消息为 ${message.message}');
       if (message.message == 'enteredFullscreen') {
@@ -90,34 +118,7 @@ class WebviewItemControllerImpel
         Utils.exitFullScreen();
       }
     });
-    controller
-        .setNavigationDelegate(NavigationDelegate(onUrlChange: (currentUrl) {
-      debugPrint('Current URL: ${currentUrl.url}');
-      if (videoPageController.currentPlugin.useNativePlayer &&
-          !videoPageController.currentPlugin.useLegacyParser) {
-        addBlobParser();
-        addInviewIframeBridge();
-      }
-      addFullscreenListener();
-    }));
-    webviewController = controller;
-    videoPageController.changeEpisode(videoPageController.currentEpisode,
-        currentRoad: videoPageController.currentRoad,
-        offset: videoPageController.historyOffset);
-  }
-
-  @override
-  Future<void> loadUrl(String url, {int offset = 0}) async {
-    ifrmaeParserTimer?.cancel();
-    videoParserTimer?.cancel();
-    await setDesktopUserAgent();
-    count = 0;
-    currentUrl = '';
-    this.offset = offset;
-    isIframeLoaded = false;
-    isVideoSourceLoaded = false;
-    videoPageController.loading = true;
-    webviewController!.loadRequest(Uri.parse(url));
+    await webviewController!.loadRequest(Uri.parse(url));
 
     ifrmaeParserTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (isIframeLoaded) {
